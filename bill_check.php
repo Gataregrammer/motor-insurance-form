@@ -137,6 +137,11 @@ include_once("db_config.php");
           {
           $selPay = "SELECT * FROM tarrif WHERE Genre = '$genre' AND use_type = '$use_type'";
           $selPay_res = mysqli_query($conn, $selPay);
+          $selPay_resCount = mysqli_num_rows($selPay_res);
+          if($selPay_resCount == 0){
+            echo 'data not match';
+          }
+          else{
           while($rowpay = mysqli_fetch_assoc($selPay_res))
           {
             $netPrm = $rowpay['payment'];
@@ -182,7 +187,6 @@ include_once("db_config.php");
               
             }elseif($period == 6){
               echo '<br>';
-              echo 'amezi atandatu';
 
               $netPrm = $netPrm * 75/100;
               $docfees = 2500;
@@ -420,11 +424,17 @@ include_once("db_config.php");
             } 
           }
         }
+        }
         else{
           echo 'CAR VALUE: ';echo $carval;
           echo '<br>';
           $selPay = "SELECT * FROM tarrif WHERE Genre = '$genre' AND use_type = '$use_type'";
           $selPay_res = mysqli_query($conn, $selPay);
+          $selPay_resCount = mysqli_num_rows($selPay_res);
+          if($selPay_resCount == 0){
+            echo 'data not match';
+          }
+          else{
           while($rowpay = mysqli_fetch_assoc($selPay_res))
           {
             $netPrm = $rowpay['payment'];
@@ -649,6 +659,7 @@ include_once("db_config.php");
               echo 'Total: '; echo $total;echo '<br>';
             }
           }
+        }
           
 
         }

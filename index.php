@@ -113,7 +113,7 @@ include_once("db_config.php");
           </div>
           <div class="col-md-6">
             <div class="form-outline">
-              <input type="number" name="tin_number" id="typeNumber" class="form-control" />
+              <input type="number" name="tin_number" id="typeNumber" class="form-control" required />
               <label class="form-label" for="typeNumber">TIN Number</label>
             </div>
           </div>
@@ -131,7 +131,7 @@ include_once("db_config.php");
           </div>
           <div class="col-md-6">
             <div class="form-outline">
-              <input type="number" name="chassis_number" id="typeNumber" class="form-control" required/>
+              <input type="text" name="chassis_number" id="typeNumber" class="form-control" required/>
               <label class="form-label" for="typeNumber">Chassis</label>
             </div>
           </div>
@@ -215,7 +215,7 @@ include_once("db_config.php");
           <div class="col-md-6">
             <label class="form-label" for="customFile">Upload Carte joune</label>
             <div class="form-outline">
-                <input type="file" name="cover_photo" class="form-control" id="customFile" required/>
+                <input type="file" name="cover_photo" class="form-control" id="customFile"/>
             </div>
           </div>
           <div class="col-md-6">
@@ -244,6 +244,43 @@ include_once("db_config.php");
 {
 
   include "db_config.php";
+  
+  $first_name = $_POST['first_name'];
+  $last_name = $_POST['last_name'];
+  $phone_number = $_POST['phone_number'];
+  $email_address = $_POST['email_address'];
+  $tin_number = $_POST['tin_number'];
+  $id_number = $_POST['id_number'];
+  $plate_number = $_POST['plate_number'];
+  $chassis_number = $_POST['chassis_number'];
+  $insurance_company = $_POST['insurance_company'];
+  $insurance_type = $_POST['insurance_type'];
+  $use_type = $_POST['use_type'];
+  $Genre = $_POST['Genre'];
+  $marque = $_POST['marque'];
+  $period = $_POST['period'];
+  $anne = $_POST['anne'];
+  $seats = $_POST['seats'];
+  $value = $_POST['value'];
+
+
+
+  if(empty($_POST['cover_photo'])){
+    $new_img_name = "no photo uploded";
+    
+  $query = "INSERT INTO insurances (first_name, last_name, phone_number, email_address, tin_number,
+  id_number, plate_number, chassis, insurance_company, insurance_type, use_type, Genre, car_type, Period, anne, carte_joune, seat, value)
+   VALUES ('$first_name', '$last_name', '$phone_number', '$email_address', '$tin_number', '$id_number', '$plate_number', '$chassis_number', '$insurance_company',
+    '$insurance_type', '$use_type', '$Genre', '$marque', '$period', '$anne','$new_img_name','$seats', $value)";
+
+    $result = mysqli_query($conn, $query);
+
+    if($result)
+    {
+    echo '<script typr="text/javascript"> document.location="bill_check.php?Plate_number='.$plate_number.'"</script>';    
+    }
+  }
+  else{
  $img_name = $_FILES['cover_photo']['name']; 
  $img_size = $_FILES['cover_photo']['size']; 
  $tmp_name = $_FILES['cover_photo']['tmp_name']; 
@@ -254,8 +291,7 @@ include_once("db_config.php");
  {
      if($img_size > 1000000)
      {
-      echo '<script typr="text/javascript"> document.location="index.php?
-      Large= Photo File size is too large, max is 1 MB"</script>';
+      echo '<p class="alert-light text-danger text-center py-3">Larg size of photo, allowed is 1MB</p>';
      }
      else
      {
@@ -265,6 +301,7 @@ include_once("db_config.php");
 
          if(in_array($img_ex_lc, $allowed_exs))
          {
+            $new_img_name = "no photo uploded";
              $new_img_name = uniqid("IMG", true).'.'.$img_ex_lc;
              $img_upload_path = 'img/'. $new_img_name;
              move_uploaded_file($tmp_name, $img_upload_path);
@@ -316,7 +353,7 @@ include_once("db_config.php");
    $em = "unknown error aquired!";
    header("location: index.php?error=$em");  
  }
-
+}
 
 }
         ?>
